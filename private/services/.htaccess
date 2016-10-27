@@ -1,0 +1,2 @@
+# Deny all public access to the directory and sub-directories
+Deny from all

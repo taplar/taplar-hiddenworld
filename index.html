@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Taplar - Veil of Dreams</title>
+		
+		<link rel="stylesheet" href="./public/styles/vendor/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="./public/styles/all.css">
+	</head>
+	
+	<body>
+		<div class="core-global-container">
+			<div class="core-header">
+				<a href="//www.taplar.com" class="core-link core-home-link"><i class="fa fa-home" title="Home"></i></a>
+				<span class="core-title">Veil of Dreams</span>
+				<a href="#" class="core-link core-menu-link"><i class="fa fa-bars" title="Main Menu"></i></a>
+			</div>
+			
+			<div class="core-content">
+				<div class="welcome">
+					<div class="title">Equipment Guide</div>
+					<p class="comment">Herein you can find almost anything you want to know about the equipment and items of Hiddenworld.  Please give a big thanks to Gandalf who provided the information.</p>
+					<p class="comment">Please use the <i class="main-menu-icon fa fa-bars"> menu</i> above to select your filter.</p>
+				</div>
+			</div>
+			
+			<div class="core-spinner core-hide"><i class="fa fa-spinner fa-pulse"></i></div>
+			<div class="core-overlay core-hide"></div>
+		</div>
+		
+		<script type="text/x-handlebars-template" class="template" id="main-menu-template">
+			<div class="main-menu dialog core-hide">
+				<ul class="menu-list">
+					<li class="label">Filter On</li>
+					
+					{{#menus}}
+						<li class="sub-menu">
+							<a href="#" data-submenu="{{submenu}}">{{label}}<i class="expand fa fa-arrow-circle-right"></i></a>
+						</li>
+					{{/menus}}
+				</ul>
+			</div>
+		</script>
+		
+		<script type="text/x-handlebars-template" class="template" id="submenu-template">
+			<div class="{{subMenuType}}-menu dialog sub-menu core-hide" data-endpoint="{{endpoint}}">
+				<ul class="menu-list">
+					<li class="label">{{menuLabel}}</li>
+					
+					<li>
+						{{#options}}
+							<a href="#" class="menu-option" data-value="{{value}}">{{label}}</a>
+						{{/options}}
+					</li>
+				</ul>
+			</div>
+		</script>
+		
+		<script type="text/x-handlebars-template" class="template" id="results-template">
+			<div class="{{resultType}} result-container">
+				<div class="title">{{resultLabel}}</div>
+				
+				<table class="result-table" align="center">
+					<thead>
+						<tr>
+							{{#resultLabels}}
+								<th>{{{label}}}</th>
+							{{/resultLabels}}
+						</tr>
+					</thead>
+					
+					<tbody>
+						{{#results}}
+							<tr>
+								{{#properties}}
+									<td class="{{class}} {{numeric}}">{{{value}}}</td>
+								{{/properties}}
+							</tr>
+						{{/results}}
+					</tbody>
+				</table>
+			</div>
+		</script>
+		
+		<script src="./public/scripts/vendor/jquery/3.0.0/jquery.min.js"></script>
+		<script src="./public/scripts/vendor/handlebars/1.0.0/handlebars.min.js"></script>
+		<script src="./public/scripts/src/all.js"></script>
+	</body>
+</html>

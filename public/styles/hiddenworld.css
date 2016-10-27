@@ -1,0 +1,125 @@
+body {
+  background-color: #000000;
+}
+.core-global-container .core-content {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+.core-global-container .core-content .result-container {
+  width: 100vw;
+}
+.core-global-container .core-content .result-container .title {
+  color: #ff0000;
+  font-size: 21px;
+  padding: 21px 0;
+  text-align: center;
+}
+.core-global-container .core-content .result-container .result-table {
+  background-color: #151515;
+  color: #ffffff;
+  font-family: sans-serif;
+  font-size: 15px;
+  max-width: 100vw;
+}
+.core-global-container .core-content .result-container .result-table tbody tr {
+  background-color: #222222;
+}
+.core-global-container .core-content .result-container .result-table tbody tr:nth-child(2n) {
+  background-color: #2f2f2f;
+}
+.core-global-container .core-content .result-container .result-table tbody tr td {
+  padding: 6px 2px;
+}
+.core-global-container .core-content .result-container .result-table tbody tr .element {
+  text-align: center;
+}
+.core-global-container .core-content .result-container .result-table tbody tr .numeric {
+  text-align: right;
+}
+.core-global-container .core-content .result-container .result-table thead th {
+  background-color: #4b4b4b;
+  padding: 6px 0;
+}
+.core-global-container .core-content .welcome {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+.core-global-container .core-content .welcome .comment {
+  color: #ffffff;
+  font-size: 21px;
+  text-indent: 18px;
+}
+.core-global-container .core-content .welcome .comment .main-menu-icon {
+  text-indent: initial;
+}
+.core-global-container .core-content .welcome .title {
+  color: #ff0000;
+  font-size: 21px;
+  padding-top: 21px;
+  text-align: center;
+}
+.core-global-container .core-header {
+  background-color: #000074;
+  color: #ffffff;
+  z-index: 751;
+}
+.core-global-container .dialog {
+  background-color: #000000;
+  border: 1px solid #4b4b4b;
+  border-radius: 12px;
+  color: #ffffff;
+  font-family: sans-serif;
+  font-size: 24px;
+  right: 6px;
+  position: absolute;
+  top: 42px;
+  z-index: 750;
+}
+.core-global-container .dialog.main-menu .sub-menu {
+  padding-right: 36px;
+  position: relative;
+}
+.core-global-container .dialog.main-menu .sub-menu:hover {
+  background-color: #303030;
+}
+.core-global-container .dialog.main-menu .sub-menu .expand {
+  line-height: 30px;
+  position: absolute;
+  right: 6px;
+}
+.core-global-container .dialog .menu-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.core-global-container .dialog .menu-list li {
+  background-color: #232323;
+  line-height: 30px;
+  padding: 6px;
+}
+.core-global-container .dialog .menu-list li:first-child {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+.core-global-container .dialog .menu-list li:last-child {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+.core-global-container .dialog .menu-list li:not(:last-child) {
+  border-bottom: 1px solid #161616;
+}
+.core-global-container .dialog .menu-list .label {
+  background-color: #4b4b4b;
+}
+.core-global-container .dialog .menu-list .menu-option {
+  display: inline-block;
+  margin-right: 6px;
+  margin-top: 6px;
+  padding: 6px;
+  background-color: #373737;
+  border: 1px solid #000000;
+  border-radius: 6px;
+}
+.core-global-container .dialog .menu-list .menu-option:hover {
+  background-color: #424242;
+}
