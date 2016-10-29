@@ -1,27 +1,26 @@
-;'use strict';
-var Core = ( function ( $, window, document, undefined ) {
-	var instance;
+;var Core = ( ( $, window, document, undefined ) => {
+	let instance;
 	
-	var buildApi = function () {
-		var $window = $( window )
+	function buildApi () {
+		let $window = $( window )
 			, $coreContainer = $( '.core-global-container', document.body )
 			, $coreHeader = $( '.core-header', document.body )
 			, $overlay = $( '.core-overlay', document.body )
 			, $spinner = $( '.core-spinner', document.body );
 		
-		var variables = {
+		let variables = {
 			startScrollPosition: 0
 			, startScrollTime: 0
 		};
 		
-		var functions = {
-			hideCoreMenu: function ( currentScrollPosition, currentScrollTime ) {
+		let functions = {
+			hideCoreMenu ( currentScrollPosition, currentScrollTime ) {
 				$coreHeader.addClass( 'core-scroll-up' );
 				
 				variables.startScrollPosition = currentScrollPosition;
 				variables.startScrollTime = currentScrollTime;
 			}
-			, hideCoreMenuIfRatioIsTooLarge: function () {
+			, hideCoreMenuIfRatioIsTooLarge () {
 				if ( $coreHeader.height() / window.innerHeight >= 0.2 ) {
 					$coreHeader.addClass( 'core-hide' );
 				} else {
@@ -30,14 +29,14 @@ var Core = ( function ( $, window, document, undefined ) {
 				
 				setTimeout( functions.hideCoreMenuIfRatioIsTooLarge, 250 );
 			}
-			, showCoreMenu: function ( currentScrollPosition, currentScrollTime ) {
+			, showCoreMenu ( currentScrollPosition, currentScrollTime ) {
 				$coreHeader.removeClass( 'core-scroll-up' );
 				
 				variables.startScrollPosition = currentScrollPosition;
 				variables.startScrollTime = currentScrollTime;
 			}
-			, toggleCoreMenuOnScroll: function () {
-				var currentScrollTime = Date.now()
+			, toggleCoreMenuOnScroll () {
+				let currentScrollTime = Date.now()
 					, currentScrollPosition = $coreContainer.scrollTop();
 				
 				if ( currentScrollPosition > $coreHeader.height() ) {
@@ -54,21 +53,21 @@ var Core = ( function ( $, window, document, undefined ) {
 			}
 		};
 		
-		var api = {
+		let api = {
 			privateFunctions: functions
 			, privateVariables: variables
-			, hideSpinner: function () {
+			, hideSpinner () {
 				$spinner.addClass( 'core-hide' );
 				$overlay.addClass( 'core-hide' );
 				
 				return instance;
 			}
-			, hideOverlay: function () {
+			, hideOverlay () {
 				$overlay.addClass( 'core-hide' );
 				
 				return instance;
 			}
-			, initialize: function () {
+			, initialize () {
 				functions.toggleCoreMenuOnScroll();
 				functions.hideCoreMenuIfRatioIsTooLarge();
 				
@@ -76,12 +75,12 @@ var Core = ( function ( $, window, document, undefined ) {
 				
 				return instance;
 			}
-			, showOverlay: function () {
+			, showOverlay () {
 				$overlay.removeClass( 'core-hide' );
 				
 				return instance;
 			}
-			, showSpinner: function () {
+			, showSpinner () {
 				$overlay.removeClass( 'core-hide' );
 				$spinner.removeClass( 'core-hide' );
 				
@@ -93,7 +92,7 @@ var Core = ( function ( $, window, document, undefined ) {
 	};
 	
 	return {
-		getInstance: function () {
+		getInstance () {
 			if ( !instance ) {
 				instance = buildApi();
 				
@@ -105,6 +104,6 @@ var Core = ( function ( $, window, document, undefined ) {
 		}
 		, getTestInstance: buildApi
 	};
-}( jQuery, window, document ) );
+} )( jQuery, window, document );
 
 Core.getInstance().initialize();

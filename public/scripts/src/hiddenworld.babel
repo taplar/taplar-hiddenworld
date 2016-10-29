@@ -1,8 +1,7 @@
-;'use strict';
-var Hiddenworld = ( function ( $, window, document, undefined ) {
-	var instance;
+;var Hiddenworld = ( ( $, window, document, undefined ) => {
+	let instance;
 	
-	var buildApi = function () {
+	function buildApi () {
 		var $globalContainer = $( '.core-global-container', document.body )
 			, $globalHeader = $globalContainer.find( '.core-header' )
 			, $globalContent = $globalContainer.find( '.core-content' )
@@ -31,24 +30,24 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 				, '17': 'Zalta'
 			};
 		
-		var variables = {
+		let variables = {
 			templates: {}
 		};
 		
-		var functions = {
-			bindMainMenuAction: function () {
+		let functions = {
+			bindMainMenuAction () {
 				$globalHeader.find( '.core-menu-link' ).on( 'touchend click', functions.openMainMenu );
 			}
-			, bindOverlayAction: function () {
+			, bindOverlayAction () {
 				$overlay.on( 'touchend click', functions.closeOpenMenus );
 			}
-			, bindSubMenuAction: function () {
+			, bindSubMenuAction () {
 				$allMenus = $globalContainer.find( '.dialog.main-menu, .dialog.sub-menu' );
 				
 				$allMenus.filter( '.dialog.sub-menu' ).on( 'touchend click', '.menu-option', functions.processMenuOption );
 			}
-			, buildAccessoriesResultMap: function ( accessories ) {
-				return accessories.reduce( function ( results, accessory, towns, properties ) {
+			, buildAccessoriesResultMap ( accessories ) {
+				return accessories.reduce( ( results, accessory, towns, properties ) => {
 					towns = accessory.towns;
 					
 					if ( towns.indexOf( 'Located in ' ) === 0 ) {
@@ -68,8 +67,8 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 					return results;
 				}, [] );
 			}
-			, buildArmoursResultMap: function ( armours ) {
-				return armours.reduce( function ( results, armour, towns, properties ) {
+			, buildArmoursResultMap ( armours ) {
+				return armours.reduce( ( results, armour, towns, properties ) => {
 					towns = armour.towns;
 					
 					if ( towns.indexOf( 'Located in ' ) === 0 ) {
@@ -90,8 +89,8 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 					return results;
 				}, [] );
 			}
-			, buildDonationsResultMap: function ( donations ) {
-				return donations.reduce( function ( results, donation, properties ) {
+			, buildDonationsResultMap ( donations ) {
+				return donations.reduce( ( results, donation, properties ) => {
 					properties = [
 						{ class: 'level', numeric: 'numeric', value: donation.level }
 						, { class: 'donation', numeric: 'numeric', value: donation.donation }
@@ -102,13 +101,11 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 					return results;
 				}, [] );
 			}
-			, buildMenuOptions: function ( options ) {
-				return options.map( function ( option, index ) {
-					return { value: index + 1, label: option };
-				} );
+			, buildMenuOptions ( options ) {
+				return options.map( ( option, index ) => ( { value: index + 1, label: option } ) );
 			}
-			, buildMonstersResultMap: function ( monsters, selectedTown ) {
-				return monsters.reduce( function ( results, monster, town, properties ) {
+			, buildMonstersResultMap ( monsters, selectedTown ) {
+				return monsters.reduce( ( results, monster, town, properties ) => {
 					if ( monster.place ) {
 						town = monster.place;
 					} else {
@@ -126,8 +123,8 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 					return results;
 				}, [] );
 			}
-			, buildPotionsResultMap: function ( potions ) {
-				return potions.reduce( function ( results, potion, properties ) {
+			, buildPotionsResultMap ( potions ) {
+				return potions.reduce( ( results, potion, properties ) => {
 					properties = [
 						{ class: 'level', numeric: 'numeric', value: potion.levelmin }
 						, { class: 'name', numeric: '', value: potion.name }
@@ -140,8 +137,8 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 					return results;
 				}, [] );
 			}
-			, buildWeaponsResultMap: function ( weapons ) {
-				return weapons.reduce( function ( results, weapon, properties ) {
+			, buildWeaponsResultMap ( weapons ) {
+				return weapons.reduce( ( results, weapon, properties ) => {
 					properties = [
 						{ class: 'level', numeric: 'numeric', value: weapon.level }
 						, { class: 'name', numeric: '', value: weapon.name }
@@ -155,27 +152,27 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 					return results;
 				}, [] );
 			}
-			, clearPreviousResults: function () {
+			, clearPreviousResults () {
 				$globalContent.find( '.result-container ' ).remove();
 				$welcome.removeClass( 'core-hide' );
 			}
-			, closeOpenMenus: function () {
+			, closeOpenMenus () {
 				if ( $spinner.hasClass( 'core-hide' ) ) {
 					$allMenus.addClass( 'core-hide' );
 					Core.getInstance().hideOverlay();
 				}
 			}
-			, compileTemplates: function () {
-				var $allScripts = $( 'script', document );
+			, compileTemplates () {
+				let $allScripts = $( 'script', document );
 				
-				$allScripts.filter( '.template' ).each( function ( index, element ) {
-					variables.templates[ element.id ] = Handlebars.compile( element.innerHTML );
-				} );
+				$allScripts.filter( '.template' ).each( ( index, element ) =>
+					variables.templates[ element.id ] = Handlebars.compile( element.innerHTML )
+				);
 				
 				$allScripts.detach();
 			}
-			, createAccessorySubMenu: function () {
-				var accessorySubMenu = variables.templates[ 'submenu-template' ]( {
+			, createAccessorySubMenu () {
+				let accessorySubMenu = variables.templates[ 'submenu-template' ]( {
 					subMenuType: 'accessory'
 					, endpoint: 'attributes'
 					, menuLabel: 'Accessory Attribute'
@@ -197,8 +194,8 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 				
 				$globalContainer.append( accessorySubMenu );
 			}
-			, createCategorySubMenu: function () {
-				var categorySubMenu = variables.templates[ 'submenu-template' ]( {
+			, createCategorySubMenu () {
+				let categorySubMenu = variables.templates[ 'submenu-template' ]( {
 					subMenuType: 'category'
 					, endpoint: 'categories'
 					, menuLabel: 'Category'
@@ -213,14 +210,14 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 				
 				$globalContainer.append( categorySubMenu );
 			}
-			, createLevelSubMenu: function () {
-				var options = [];
-				
-				for ( var i = 1; i < 101; i++ ) {
+			, createLevelSubMenu () {
+				let options = [];
+
+				for ( let i = 1; i < 101; i++ ) {
 					options.push( { value: i, label: ( i < 10 ? '0' : '' ) + i } );
 				}
 				
-				var levelSubMenu = variables.templates[ 'submenu-template' ]( {
+				let levelSubMenu = variables.templates[ 'submenu-template' ]( {
 					subMenuType: 'level'
 					, endpoint: 'levels'
 					, menuLabel: 'Level Summary'
@@ -229,7 +226,7 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 				
 				$globalContainer.append( levelSubMenu );
 			}
-			, createMainMenu: function () {
+			, createMainMenu () {
 				$mainMenu = $( variables.templates[ 'main-menu-template' ]( {
 					menus: [
 						{ submenu: 'category-menu', label: 'Category' }
@@ -243,8 +240,8 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 				$mainMenu.on( 'touchend click', '.sub-menu a', functions.openSubMenu );
 				$globalContainer.append( $mainMenu );
 			}
-			, createMonsterSubMenu: function () {
-				var monsterSubMenu = variables.templates[ 'submenu-template' ]( {
+			, createMonsterSubMenu () {
+				let monsterSubMenu = variables.templates[ 'submenu-template' ]( {
 					subMenuType: 'monster'
 					, endpoint: 'towns'
 					, menuLabel: 'Monster Location'
@@ -271,8 +268,8 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 				
 				$globalContainer.append( monsterSubMenu );
 			}
-			, createWeaponSubMenu: function () {
-				var weaponSubMenu = variables.templates[ 'submenu-template' ]( {
+			, createWeaponSubMenu () {
+				let weaponSubMenu = variables.templates[ 'submenu-template' ]( {
 			 		subMenuType: 'weapon'
 					, endpoint: 'types'
 					, menuLabel: 'Weapon Type'
@@ -298,8 +295,8 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 				
 				$globalContainer.append( weaponSubMenu );
 			}
-			, displayAccessories: function ( accessories ) {
-				var accessories = variables.templates[ 'results-template' ]( {
+			, displayAccessories ( accessories ) {
+				accessories = variables.templates[ 'results-template' ]( {
 					resultType: 'items'
 					, resultLabel: 'Accessories'
 					, resultLabels: [
@@ -314,8 +311,8 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 				
 				$globalContent.append( accessories );
 			}
-			, displayArmours: function ( armours ) {
-				var armours = variables.templates[ 'results-template' ]( {
+			, displayArmours ( armours ) {
+				armours = variables.templates[ 'results-template' ]( {
 					resultType: 'armours'
 					, resultLabel: 'Armours'
 					, resultLabels: [
@@ -331,8 +328,8 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 				
 				$globalContent.append( armours );
 			}
-			, displayDonations: function ( donations ) {
-				var donations = variables.templates[ 'results-template' ]( {
+			, displayDonations ( donations ) {
+				donations = variables.templates[ 'results-template' ]( {
 					resultType: 'donations'
 					, resultLabel: 'Donations'
 					, resultLabels: [
@@ -344,19 +341,17 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 				
 				$globalContent.append( donations );
 			}
-			, displayEndpoint: function ( endpoint, selectedValue ) {
+			, displayEndpoint ( endpoint, selectedValue ) {
 				Core.getInstance().showSpinner();
 				
 				$.ajax( {
 					url: 'api/equipment/'+ endpoint
 					, dataType: 'json'
-				} ).then( function ( data ) {
-					functions.displayFilterResults( data, selectedValue );
-				} ).always( function () {
-					Core.getInstance().hideSpinner();
-				} );
+				} )
+				.then( ( data ) => functions.displayFilterResults( data, selectedValue ) )
+				.always( () => Core.getInstance().hideSpinner() );
 			}
-			, displayFilterResults: function ( results, searchValue ) {
+			, displayFilterResults ( results, searchValue ) {
 				$welcome.addClass( 'core-hide' );
 				
 				if ( results.donations ) functions.displayDonations( results.donations );
@@ -366,8 +361,8 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 				if ( results.potions ) functions.displayPotions( results.potions );
 				if ( results.monsters ) functions.displayMonsters( results.monsters, searchValue );
 			}
-			, displayMonsters: function ( monsters, selectedTown ) {
-				var monsters = variables.templates[ 'results-template' ]( {
+			, displayMonsters ( monsters, selectedTown ) {
+				monsters = variables.templates[ 'results-template' ]( {
 					resultType: 'monsters'
 					, resultLabel: 'Monsters'
 					, resultLabels: [
@@ -380,8 +375,8 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 				
 				$globalContent.append( monsters );
 			}
-			, displayPotions: function ( potions ) {
-				var potions = variables.templates[ 'results-template' ]( {
+			, displayPotions ( potions ) {
+				potions = variables.templates[ 'results-template' ]( {
 					resultType: 'potions'
 					, resultLabel: 'Potions'
 					, resultLabels: [
@@ -395,8 +390,8 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 				
 				$globalContent.append( potions );
 			}
-			, displayWeapons: function ( weapons ) {
-				var weapons = variables.templates[ 'results-template' ]( {
+			, displayWeapons ( weapons ) {
+				weapons = variables.templates[ 'results-template' ]( {
 					  resultType: 'weapons'
 					, resultLabel: 'Weapons'
 					, resultLabels: [
@@ -411,7 +406,7 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 				
 				$globalContent.append( weapons );
 			}
-			, openMainMenu: function ( e ) {
+			, openMainMenu ( e ) {
 				e.preventDefault();
 				
 				if ( functions.touchEventEndedOnSameElement( e ) ) {
@@ -421,7 +416,7 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 					$mainMenu.removeClass( 'core-hide' );
 				}
 			}
-			, openSubMenu: function ( e ) {
+			, openSubMenu ( e ) {
 				e.preventDefault();
 				
 				if ( functions.touchEventEndedOnSameElement( e ) ) {
@@ -430,13 +425,13 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 					$allMenus.filter( '.'+ $( this ).data( 'submenu' ) ).removeClass( 'core-hide' );
 				}
 			}
-			, processMenuOption: function ( e ) {
+			, processMenuOption ( e ) {
 				e.preventDefault();
 				
 				if ( functions.touchEventEndedOnSameElement( e ) ) {
 					functions.closeOpenMenus();
 					
-					var $option = $( this )
+					let $option = $( this )
 						, $menu = $option.closest( '.sub-menu' )
 						, selectedValue = $option.data( 'value' )
 						, endpoint = $menu.data( 'endpoint' ) +'/'+ selectedValue;
@@ -445,7 +440,7 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 					history.pushState( { endpoint: endpoint, selectedValue: selectedValue }, document.title, document.location.href );
 				}
 			}
-			, touchEventEndedOnSameElement: function ( e ) {
+			, touchEventEndedOnSameElement ( e ) {
 				if ( e.changedTouches ) {
 					var touchStop = e.changedTouches[ 0 ]
 						, lastElement = document.elementFromPoint( touchStop.clientX, touchStop.clientY );
@@ -457,11 +452,11 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 			}
 		};
 		
-		var api = {
+		let api = {
 			privateFunctions: functions
 			, privateVariables: variables
-			, initialize: function () {
-				var initializationMethods = [
+			, initialize () {
+				let initializationMethods = [
 					'compileTemplates'
 					, 'createMainMenu'
 					, 'createCategorySubMenu'
@@ -474,7 +469,7 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 					, 'bindOverlayAction'
 				];
 				
-				initializationMethods.forEach( function ( methodName ) {
+				initializationMethods.forEach( ( methodName ) => {
 					functions[ methodName ]();
 					delete functions[ methodName ];
 				} );
@@ -487,7 +482,7 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 	};
 	
 	return {
-		getInstance: function () {
+		getInstance () {
 			if ( !instance ) {
 				instance = buildApi();
 				
@@ -499,6 +494,6 @@ var Hiddenworld = ( function ( $, window, document, undefined ) {
 		}
 		, getTestInstance: buildApi
 	};
-}( jQuery, window, document ) );
+} )( jQuery, window, document );
 
 Hiddenworld.getInstance().initialize();
