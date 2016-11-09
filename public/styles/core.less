@@ -1,18 +1,61 @@
-@body-z-index: 0;
-@core-content-z-index: @body-z-index + 100;
-@core-header-z-index: @core-content-z-index + 100;
-@core-overlay-z-index: @core-header-z-index + 500;
-@core-spinner-z-index: @core-overlay-z-index + 100;
+body {
+	margin: 0;
+	min-width: 100vw;
+	min-height: 100vh;
 
-@base-font-size: 12px;
+	#core-content {
+		position: absolute;
+		top: @core-header-height;
+		left: 0;
+		right: 0;
+		z-index: @core-content-z-index;
+	}
 
-@core-header-height: @base-font-size * 3.5;
+	#core-header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: @core-header-z-index;
+		max-width: 100vw;
+		line-height: @core-header-height;
 
-@color-white: rgb(255, 255, 255);
+		#core-home-link {
+			position: absolute;
+			top: 0;
+			left: 0;
+			font-size: @base-font-size * 2;
+			padding: 0 @base-font-size * 1.75;
 
-/*====================*/
+			&:hover {
+				background-color: rgba(0, 0, 0, 25%);
+			}
+		}
 
-.core-global-container {
+		#core-main-menu-link {
+			position: absolute;
+			top: 0;
+			right: 0;
+			font-size: @base-font-size * 2;
+			padding: 0 @base-font-size * 1.75;
+
+			&:hover {
+				background-color: rgba(0, 0, 0, 25%);
+				cursor: pointer;
+			}
+		}
+
+		#core-title {
+			font-family: sans-serif;
+			font-size: @base-font-size * 2;
+			font-weight: bold;
+			text-align: center;
+		}
+	}
+}
+
+/*
+#core-global-container {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -28,14 +71,14 @@
 		text-decoration: inherit;
 	}
 	
-	.core-content {
+	#core-content {
 		left: 0;
 		position: absolute;
 		top: @core-header-height;
 		z-index: @core-content-z-index;
 	}
 	
-	.core-header {
+	#core-header {
 		font-size: @base-font-size * 2;
 		left: 0;
 		line-height: @core-header-height;
@@ -60,16 +103,16 @@
 				background-color: rgba(0, 0, 0, 0.25);
 			}
 			
-			&.core-home-link {
+			&#core-home-link {
 				left: 0;
 			}
 			
-			&.core-menu-link {
+			&#core-main-menu-label {
 				right: 0;
 			}
 		}
 		
-		.core-title {
+		#core-title {
 			font-family: sans-serif;
 			font-weight: bold;
 		}
@@ -100,3 +143,4 @@
 		z-index: @core-spinner-z-index;
 	}
 }
+*/

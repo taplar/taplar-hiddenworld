@@ -1,3 +1,4 @@
+/*
 ;var Hiddenworld = ( ( $, window, document, undefined ) => {
 	let instance;
 	
@@ -497,3 +498,4 @@
 } )( jQuery, window, document );
 
 Hiddenworld.getInstance().initialize();
+*/

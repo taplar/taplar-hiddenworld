@@ -3,30 +3,56 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Taplar - Veil of Dreams</title>
+		<title>Taplar - Hiddenworld</title>
 		
 		<link rel="stylesheet" href="./public/styles/vendor/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="./public/styles/all.css">
 	</head>
 	
 	<body>
-		<div class="core-global-container">
-			<div class="core-header">
-				<a href="//www.taplar.com" class="core-link core-home-link"><i class="fa fa-home" title="Home"></i></a>
-				<span class="core-title">Veil of Dreams</span>
-				<a href="#" class="core-link core-menu-link"><i class="fa fa-bars" title="Main Menu"></i></a>
+		<div id="core-header">
+			<a href="//www.taplar.com" class="core-link" id="core-home-link">
+				<i class="fa fa-home" title="Home"></i>
+			</a>
+
+			<div id="core-title">Hiddenworld</div>
+
+			<label for="core-main-menu" id="core-main-menu-link">
+				<i class="core-main-menu-icon fa fa-bars" title="Main Menu"></i>
+			</label>
+		</div>
+
+		<div id="core-content">
+			<div id="welcome">
+				<div class="title">Equipment Guide</div>
+
+				<p class="comment">Herein you can find almost anything you want to know about the equipment and items of Hiddenworld.  Please give a big thanks to Gandalf who provided the information.</p>
+				<p class="comment">Please use the <i class="core-main-menu-icon fa fa-bars"> menu</i> above to select your filter.</p>
 			</div>
-			
-			<div class="core-content">
-				<div class="welcome">
-					<div class="title">Equipment Guide</div>
-					<p class="comment">Herein you can find almost anything you want to know about the equipment and items of Hiddenworld.  Please give a big thanks to Gandalf who provided the information.</p>
-					<p class="comment">Please use the <i class="main-menu-icon fa fa-bars"> menu</i> above to select your filter.</p>
+		</div>
+
+		<script type="text/x-handlebars-template" class="template" id="main-menu-template">
+			<div class="dialog">
+				<ul class="menu-list">
+					<li class="label">Filter On</li>
+					
+					{{#menus}}
+						<li class="sub-menu">
+							<a href="#" data-submenu="{{submenu}}">{{label}}<i class="expand fa fa-arrow-circle-right"></i></a>
+						</li>
+					{{/menus}}
+				</ul>
+			</div>
+		</script>
+
+		<!--
+		<div id="core-container">
+			<div id="core-spinner">
+				<input type="checkbox" id="core-spinner-state">
+				<div class="core-overlay">
+					<i class="fa fa-spinner fa-pulse"></i>
 				</div>
 			</div>
-			
-			<div class="core-spinner core-hide"><i class="fa fa-spinner fa-pulse"></i></div>
-			<div class="core-overlay core-hide"></div>
 		</div>
 		
 		<script type="text/x-handlebars-template" class="template" id="main-menu-template">
@@ -82,9 +108,11 @@
 				</table>
 			</div>
 		</script>
-		
+		-->
 		<script src="./public/scripts/vendor/jquery/3.0.0/jquery.min.js"></script>
 		<script src="./public/scripts/vendor/handlebars/1.0.0/handlebars.min.js"></script>
+		<!--
 		<script src="./public/scripts/src/all.js"></script>
+		-->
 	</body>
 </html>
