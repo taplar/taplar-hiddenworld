@@ -1,0 +1,186 @@
+var Templates = ( ( $, window, document, Handlebars, undefined ) => {
+	let instance;
+
+	function buildApi () {
+		let variables = {
+			templates: {}
+		};
+
+		let functions = {
+			buildMainMenu () {
+				let mainMenu = variables.templates[ 'main-menu-template' ]( {
+					menus: [
+						{ submenu: 'category-menu', label: 'Category' }
+						, { submenu: 'accessory-menu', label: 'Accessory Attribute' }
+						, { submenu: 'weapon-menu', label: 'Weapon Type' }
+						, { submenu: 'monster-menu', label: 'Monster Location' }
+						, { submenu: 'level-menu', label: 'Level Summary' }
+					]
+				} );
+
+				document.body.innerHTML += mainMenu;
+				return instance;
+			}
+			, buildMenuOptions ( endpoint, options ) {
+				return options.map( ( option, index ) => ( { endpoint: endpoint, value: index + 1, label: option } ) );
+			}
+			, compileTemplates () {
+				let scripts = document.getElementsByTagName( 'script' );
+
+				$( scripts ).detach().filter( '.template' ).get().forEach( ( script ) => {
+					variables.templates[ script.id ] = Handlebars.compile( script.innerHTML )
+				} );
+
+				return instance;
+			}
+			, createAccessorySubMenu () {
+				let subMenu = variables.templates[ 'submenu-template' ]( {
+					subMenuType: 'accessory'
+					, menuLabel: 'Accessory Attribute'
+					, options: functions.buildMenuOptions( 'attributes', [
+						'Absorb'
+						, 'Charisma'
+						, 'Constitution'
+						, 'Dexterity'
+						, 'Evade'
+						, 'Health'
+						, 'Hp Regen'
+						, 'Intelligence'
+						, 'Mana'
+						, 'Speed'
+						, 'Strength'
+						, 'Wisdom'
+					] )
+				} );
+
+				document.body.innerHTML += subMenu;
+				return instance;
+			}
+			, createCategorySubMenu () {
+				let subMenu = variables.templates[ 'submenu-template' ]( {
+					subMenuType: 'category'
+					, menuLabel: 'Category'
+					, options: functions.buildMenuOptions( 'categories', [
+						'Weapons'
+						, 'Armours'
+						, 'Accessories'
+						, 'Potions'
+						, 'Donations'
+					] )
+				} );
+
+				document.body.innerHTML += subMenu;
+				return instance;
+			}
+			, createLevelSubMenu () {
+				let options = [];
+
+				for ( let i = 1; i < 101; i++ ) {
+					options.push( { value: i, label: ( i < 10 ? '0' : '' ) + i, endpoint: 'levels' } );
+				}
+				
+				let subMenu = variables.templates[ 'submenu-template' ]( {
+					subMenuType: 'level'
+					, menuLabel: 'Level Summary'
+					, options: options
+				} );
+
+				document.body.innerHTML += subMenu;
+				return instance;
+			}
+			, createMonsterSubMenu () {
+				let subMenu = variables.templates[ 'submenu-template' ]( {
+					subMenuType: 'monster'
+					, menuLabel: 'Monster Location'
+					, options: functions.buildMenuOptions( 'towns', [
+						'Alzas'
+						, 'Altal'
+						, 'Bren'
+						, 'Brune'
+						, 'Corollia'
+						, 'Dolence Isle'
+						, 'Elem'
+						, 'Fel'
+						, 'Feldar'
+						, 'Fodros'
+						, 'Komor'
+						, 'Lucrien'
+						, 'Luthien'
+						, 'Mogorva'
+						, 'Torvain'
+						, 'Wastelands'
+						, 'Zalta'
+					] )
+				} );
+
+				document.body.innerHTML += subMenu;
+				return instance;
+			}
+			, createWeaponSubMenu () {
+				let subMenu = variables.templates[ 'submenu-template' ]( {
+			 		subMenuType: 'weapon'
+					, menuLabel: 'Weapon Type'
+					, options: [
+						{ value: '4', label: 'Axe', endpoint: 'types' }
+						, { value: '2', label: 'Blade', endpoint: 'types' }
+						, { value: '10', label: 'Bow', endpoint: 'types' }
+						, { value: '7', label: 'Club', endpoint: 'types' }
+						, { value: '11', label: 'Crossbow', endpoint: 'types' }
+						, { value: '12', label: 'Halberd', endpoint: 'types' }
+						, { value: '8', label: 'Hammer', endpoint: 'types' }
+						, { value: '3', label: 'Knife', endpoint: 'types' }
+						, { value: '6', label: 'Knuckle', endpoint: 'types' }
+						, { value: '13', label: 'Lance', endpoint: 'types' }
+						, { value: '14', label: 'Pike', endpoint: 'types' }
+						, { value: '18', label: 'Projectile', endpoint: 'types' }
+						, { value: '17', label: 'Scythe', endpoint: 'types' }
+						, { value: '15', label: 'Spear', endpoint: 'types' }
+						, { value: '5', label: 'Staff', endpoint: 'types' }
+						, { value: '1', label: 'Sword', endpoint: 'types' }
+					]
+				} );
+
+				document.body.innerHTML += subMenu;
+				return instance;
+			}
+		};
+
+		let api = {
+			privateFunctions: functions
+			, initialize () {
+				let initializationMethods = [
+					'compileTemplates'
+					, 'buildMainMenu'
+					, 'createCategorySubMenu'
+					, 'createAccessorySubMenu'
+					, 'createLevelSubMenu'
+					, 'createMonsterSubMenu'
+					, 'createWeaponSubMenu'
+				];
+
+				initializationMethods.forEach( ( method ) => {
+					functions[ method ]();
+					delete functions[ method ];
+				} );
+			}
+		};
+
+		return api;
+	}
+
+	return {
+		getInstance () {
+			if ( !instance ) {
+				instance = buildApi();
+
+				delete instance.privateFunctions;
+				delete instance.privateVariables;
+			}
+
+			return instance;
+		}
+		, getTestInstance: buildApi
+	};
+} )( jQuery, window, document, Handlebars );
+
+Templates.getInstance().initialize();

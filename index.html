@@ -18,6 +18,7 @@
 			<div id="core-title">Hiddenworld</div>
 
 			<label for="core-main-menu" id="core-main-menu-link">
+				<input type="radio" name="core-single-menu-state" class="core-menu-state" id="core-no-menu" checked="checked">
 				<i class="core-main-menu-icon fa fa-bars" title="Main Menu"></i>
 			</label>
 		</div>
@@ -32,17 +33,44 @@
 		</div>
 
 		<script type="text/x-handlebars-template" class="template" id="main-menu-template">
-			<div class="dialog">
-				<ul class="menu-list">
-					<li class="label">Filter On</li>
-					
-					{{#menus}}
-						<li class="sub-menu">
-							<a href="#" data-submenu="{{submenu}}">{{label}}<i class="expand fa fa-arrow-circle-right"></i></a>
+			<input type="radio" name="core-single-menu-state" class="core-menu-state" id="core-main-menu">
+
+			<label for="core-no-menu" class="core-overlay">
+				<div class="core-menu">
+					<ul class="core-menu-list">
+						<li class="core-menu-label">Filter On</li>
+						
+						{{#menus}}
+							<li class="core-sub-menu">
+								<label for="{{submenu}}" class="core-sub-menu-link">
+									{{label}}
+									<i class="core-sub-menu-link-expand fa fa-arrow-circle-right"></i>
+								</label>
+							</li>
+						{{/menus}}
+					</ul>
+				</div>
+			</label>
+		</script>
+
+		<script type="text/x-handlebars-template" class="template" id="submenu-template">
+			<input type="radio" name="core-single-menu-state" class="core-menu-state" id="{{subMenuType}}-menu">
+
+			<label for="core-no-menu" class="core-overlay">
+				<div class="core-menu">
+					<ul class="core-menu-list">
+						<li class="core-menu-label">{{menuLabel}}</li>
+						
+						<li>
+							<label for="{{subMenuType}}-menu" class="core-menu-list-options">
+								{{#options}}
+									<a href="#" class="core-menu-option" data-endpoint="{{endpoint}}" data-value="{{value}}">{{label}}</a>
+								{{/options}}
+							</label>
 						</li>
-					{{/menus}}
-				</ul>
-			</div>
+					</ul>
+				</div>
+			</label>
 		</script>
 
 		<!--
@@ -54,20 +82,6 @@
 				</div>
 			</div>
 		</div>
-		
-		<script type="text/x-handlebars-template" class="template" id="main-menu-template">
-			<div class="main-menu dialog core-hide">
-				<ul class="menu-list">
-					<li class="label">Filter On</li>
-					
-					{{#menus}}
-						<li class="sub-menu">
-							<a href="#" data-submenu="{{submenu}}">{{label}}<i class="expand fa fa-arrow-circle-right"></i></a>
-						</li>
-					{{/menus}}
-				</ul>
-			</div>
-		</script>
 		
 		<script type="text/x-handlebars-template" class="template" id="submenu-template">
 			<div class="{{subMenuType}}-menu dialog sub-menu core-hide" data-endpoint="{{endpoint}}">
@@ -111,8 +125,6 @@
 		-->
 		<script src="./public/scripts/vendor/jquery/3.0.0/jquery.min.js"></script>
 		<script src="./public/scripts/vendor/handlebars/1.0.0/handlebars.min.js"></script>
-		<!--
 		<script src="./public/scripts/src/all.js"></script>
-		-->
 	</body>
 </html>
