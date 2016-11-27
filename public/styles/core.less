@@ -19,6 +19,11 @@ body {
 		z-index: @core-header-z-index;
 		max-width: 100vw;
 		line-height: @core-header-height;
+		transition: top 1s;
+
+		&.core-scroll-up {
+			top: -@core-header-height;
+		}
 
 		#core-home-link {
 			position: absolute;
@@ -51,6 +56,10 @@ body {
 			font-weight: bold;
 			text-align: center;
 		}
+	}
+
+	.core-hide {
+		display: none;
 	}
 
 	.core-menu-state {
@@ -143,67 +152,32 @@ body {
 			}
 		}
 	}
-}
 
-/*
-#core-global-container {
-	position: absolute;
-	top: 0;
-	left: 0;
-	overflow-x: hidden;
-	overflow-y: auto;
-	max-height: 100vh;
-	min-height: 100vh;
-	max-width: 100vw;
-	min-width: 100vw;
-	
-	#core-header {
-		font-size: @base-font-size * 2;
-		left: 0;
-		line-height: @core-header-height;
-		max-width: 100vw;
-		min-width: 100vw;
-		position: fixed;
-		text-align: center;
-		top: 0;
-		transition: top 1s;
-		z-index: @core-header-z-index;
-		
-		&.core-scroll-up {
-			top: -@core-header-height;
-		}
-		
-		.core-link {
-			padding: 0 @base-font-size * 1.75;
+	#core-spinner-state {
+		display: none;
+
+		+.core-overlay {
+			display: none;
 			position: absolute;
 			top: 0;
-			
-			&:hover {
-				background-color: rgba(0, 0, 0, 0.25);
-			}
-			
-			&#core-home-link {
-				left: 0;
-			}
-			
-			&#core-main-menu-label {
-				right: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: @core-spinner-overlay-z-index;
+			background-color: @color-fade-dark-black;
+
+			#core-spinner {
+				color: @color-white;
+				font-size: @base-font-size * 6;
+				line-height: 100vh;
+				text-align: center;
 			}
 		}
-		
-		#core-title {
-			font-family: sans-serif;
-			font-weight: bold;
+
+		&:checked {
+			+.core-overlay {
+				display: inherit;
+			}
 		}
-	}
-	
-	.core-spinner {
-		color: @color-white;
-		font-size: 6rem;
-		line-height: 100vh;
-		position: relative;
-		text-align: center;
-		z-index: @core-spinner-z-index;
 	}
 }
-*/

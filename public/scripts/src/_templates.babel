@@ -147,6 +147,11 @@ var Templates = ( ( $, window, document, Handlebars, undefined ) => {
 
 		let api = {
 			privateFunctions: functions
+			, buildTemplate ( templateId, data ) {
+				if ( variables.templates[ templateId ] ) return  variables.templates[ templateId ]( data );
+
+				return '';
+			}
 			, initialize () {
 				let initializationMethods = [
 					'compileTemplates'

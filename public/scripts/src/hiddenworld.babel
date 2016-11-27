@@ -1,17 +1,13 @@
-/*
-;var Hiddenworld = ( ( $, window, document, undefined ) => {
+;let Hiddenworld = ( ( $, window, document, undefined ) => {
 	let instance;
-	
+
+	HTMLCollection.prototype.toArray = function () {
+		return Array.prototype.map.call( this, ( element ) => element );
+	};
+
 	function buildApi () {
-		var $globalContainer = $( '.core-global-container', document.body )
-			, $globalHeader = $globalContainer.find( '.core-header' )
-			, $globalContent = $globalContainer.find( '.core-content' )
-			, $overlay = $globalContainer.find( '.core-overlay' )
-			, $spinner = $globalContainer.find( '.core-spinner' )
-			, $welcome = $globalContent.find( '.welcome' )
-			, $allMenus
-			, $mainMenu
-			, allTowns = {
+		let variables = {
+			allTowns: {
 				'1': 'Alzas'
 				, '2': 'Altal'
 				, '3': 'Bren'
@@ -29,23 +25,23 @@
 				, '15': 'Torvain'
 				, '16': 'Wastelands'
 				, '17': 'Zalta'
-			};
-		
-		let variables = {
-			templates: {}
+			}
 		};
-		
+
 		let functions = {
-			bindMainMenuAction () {
-				$globalHeader.find( '.core-menu-link' ).on( 'touchend click', functions.openMainMenu );
+			bindCoreMainMenuLink () {
+				document.getElementById( 'core-main-menu-link' ).addEventListener( 'click', function () {
+					document.getElementsByClassName( 'result-container' ).toArray().forEach( ( element ) =>
+						element.parentNode.removeChild( element )
+					);
+
+					document.getElementById( 'welcome' ).classList.remove( 'core-hide' );
+				} );
 			}
-			, bindOverlayAction () {
-				$overlay.on( 'touchend click', functions.closeOpenMenus );
-			}
-			, bindSubMenuAction () {
-				$allMenus = $globalContainer.find( '.dialog.main-menu, .dialog.sub-menu' );
-				
-				$allMenus.filter( '.dialog.sub-menu' ).on( 'touchend click', '.menu-option', functions.processMenuOption );
+			, bindCoreMenuOptions () {
+				document.getElementsByClassName( 'core-menu-option' ).toArray().forEach( ( element ) =>
+					element.addEventListener( 'click', functions.processCoreMenuOption )
+				);
 			}
 			, buildAccessoriesResultMap ( accessories ) {
 				return accessories.reduce( ( results, accessory, towns, properties ) => {
@@ -102,9 +98,6 @@
 					return results;
 				}, [] );
 			}
-			, buildMenuOptions ( options ) {
-				return options.map( ( option, index ) => ( { value: index + 1, label: option } ) );
-			}
 			, buildMonstersResultMap ( monsters, selectedTown ) {
 				return monsters.reduce( ( results, monster, town, properties ) => {
 					if ( monster.place ) {
@@ -116,7 +109,7 @@
 					properties = [
 						{ class: 'level', numeric: 'numeric', value: monster.level }
 						, { class: 'name', numeric: '', value: monster.name }
-						, { class: 'location', numeric: '', value: allTowns[ town ] }
+						, { class: 'location', numeric: '', value: variables.allTowns[ town ] }
 					];
 					
 					results.push( { properties: properties } );
@@ -153,151 +146,8 @@
 					return results;
 				}, [] );
 			}
-			, clearPreviousResults () {
-				$globalContent.find( '.result-container ' ).remove();
-				$welcome.removeClass( 'core-hide' );
-			}
-			, closeOpenMenus () {
-				if ( $spinner.hasClass( 'core-hide' ) ) {
-					$allMenus.addClass( 'core-hide' );
-					Core.getInstance().hideOverlay();
-				}
-			}
-			, compileTemplates () {
-				let $allScripts = $( 'script', document );
-				
-				$allScripts.filter( '.template' ).each( ( index, element ) =>
-					variables.templates[ element.id ] = Handlebars.compile( element.innerHTML )
-				);
-				
-				$allScripts.detach();
-			}
-			, createAccessorySubMenu () {
-				let accessorySubMenu = variables.templates[ 'submenu-template' ]( {
-					subMenuType: 'accessory'
-					, endpoint: 'attributes'
-					, menuLabel: 'Accessory Attribute'
-					, options: functions.buildMenuOptions( [
-						'Absorb'
-						, 'Charisma'
-						, 'Constitution'
-						, 'Dexterity'
-						, 'Evade'
-						, 'Health'
-						, 'Hp Regen'
-						, 'Intelligence'
-						, 'Mana'
-						, 'Speed'
-						, 'Strength'
-						, 'Wisdom'
-					] )
-				} );
-				
-				$globalContainer.append( accessorySubMenu );
-			}
-			, createCategorySubMenu () {
-				let categorySubMenu = variables.templates[ 'submenu-template' ]( {
-					subMenuType: 'category'
-					, endpoint: 'categories'
-					, menuLabel: 'Category'
-					, options: functions.buildMenuOptions( [
-						'Weapons'
-						, 'Armours'
-						, 'Accessories'
-						, 'Potions'
-						, 'Donations'
-					] )
-				} );
-				
-				$globalContainer.append( categorySubMenu );
-			}
-			, createLevelSubMenu () {
-				let options = [];
-
-				for ( let i = 1; i < 101; i++ ) {
-					options.push( { value: i, label: ( i < 10 ? '0' : '' ) + i } );
-				}
-				
-				let levelSubMenu = variables.templates[ 'submenu-template' ]( {
-					subMenuType: 'level'
-					, endpoint: 'levels'
-					, menuLabel: 'Level Summary'
-					, options: options
-				} );
-				
-				$globalContainer.append( levelSubMenu );
-			}
-			, createMainMenu () {
-				$mainMenu = $( variables.templates[ 'main-menu-template' ]( {
-					menus: [
-						{ submenu: 'category-menu', label: 'Category' }
-						, { submenu: 'accessory-menu', label: 'Accessory Attribute' }
-						, { submenu: 'weapon-menu', label: 'Weapon Type' }
-						, { submenu: 'monster-menu', label: 'Monster Location' }
-						, { submenu: 'level-menu', label: 'Level Summary' }
-					]
-				} ) );
-				
-				$mainMenu.on( 'touchend click', '.sub-menu a', functions.openSubMenu );
-				$globalContainer.append( $mainMenu );
-			}
-			, createMonsterSubMenu () {
-				let monsterSubMenu = variables.templates[ 'submenu-template' ]( {
-					subMenuType: 'monster'
-					, endpoint: 'towns'
-					, menuLabel: 'Monster Location'
-					, options: functions.buildMenuOptions( [
-						'Alzas'
-						, 'Altal'
-						, 'Bren'
-						, 'Brune'
-						, 'Corollia'
-						, 'Dolence Isle'
-						, 'Elem'
-						, 'Fel'
-						, 'Feldar'
-						, 'Fodros'
-						, 'Komor'
-						, 'Lucrien'
-						, 'Luthien'
-						, 'Mogorva'
-						, 'Torvain'
-						, 'Wastelands'
-						, 'Zalta'
-					] )
-				} );
-				
-				$globalContainer.append( monsterSubMenu );
-			}
-			, createWeaponSubMenu () {
-				let weaponSubMenu = variables.templates[ 'submenu-template' ]( {
-			 		subMenuType: 'weapon'
-					, endpoint: 'types'
-					, menuLabel: 'Weapon Type'
-					, options: [
-						{ value: '4', label: 'Axe' }
-						, { value: '2', label: 'Blade' }
-						, { value: '10', label: 'Bow' }
-						, { value: '7', label: 'Club' }
-						, { value: '11', label: 'Crossbow' }
-						, { value: '12', label: 'Halberd' }
-						, { value: '8', label: 'Hammer' }
-						, { value: '3', label: 'Knife' }
-						, { value: '6', label: 'Knuckle' }
-						, { value: '13', label: 'Lance' }
-						, { value: '14', label: 'Pike' }
-						, { value: '18', label: 'Projectile' }
-						, { value: '17', label: 'Scythe' }
-						, { value: '15', label: 'Spear' }
-						, { value: '5', label: 'Staff' }
-						, { value: '1', label: 'Sword' }
-					]
-				} );
-				
-				$globalContainer.append( weaponSubMenu );
-			}
 			, displayAccessories ( accessories ) {
-				accessories = variables.templates[ 'results-template' ]( {
+				accessories = Templates.getInstance().buildTemplate( 'results-template', {
 					resultType: 'items'
 					, resultLabel: 'Accessories'
 					, resultLabels: [
@@ -310,10 +160,10 @@
 					, results: functions.buildAccessoriesResultMap( accessories )
 				} );
 				
-				$globalContent.append( accessories );
+				document.getElementById( 'core-content' ).innerHTML += accessories;
 			}
 			, displayArmours ( armours ) {
-				armours = variables.templates[ 'results-template' ]( {
+				armours = Templates.getInstance().buildTemplate( 'results-template', {
 					resultType: 'armours'
 					, resultLabel: 'Armours'
 					, resultLabels: [
@@ -327,10 +177,10 @@
 					, results: functions.buildArmoursResultMap( armours )
 				} );
 				
-				$globalContent.append( armours );
+				document.getElementById( 'core-content' ).innerHTML += armours;
 			}
 			, displayDonations ( donations ) {
-				donations = variables.templates[ 'results-template' ]( {
+				donations = Templates.getInstance().buildTemplate( 'results-template', {
 					resultType: 'donations'
 					, resultLabel: 'Donations'
 					, resultLabels: [
@@ -340,20 +190,19 @@
 					, results: functions.buildDonationsResultMap( donations )
 				} );
 				
-				$globalContent.append( donations );
+				document.getElementById( 'core-content' ).innerHTML += donations;
 			}
 			, displayEndpoint ( endpoint, selectedValue ) {
-				Core.getInstance().showSpinner();
+				let coreSpinner = document.getElementById( 'core-spinner-state' );
+
+				coreSpinner.checked = true;
 				
-				$.ajax( {
-					url: 'api/equipment/'+ endpoint
-					, dataType: 'json'
-				} )
-				.then( ( data ) => functions.displayFilterResults( data, selectedValue ) )
-				.always( () => Core.getInstance().hideSpinner() );
+				$.getJSON( 'api/equipment/'+ endpoint )
+					.then( ( data ) => functions.displayFilterResults( data, selectedValue ) )
+					.always( () => coreSpinner.checked = false );
 			}
 			, displayFilterResults ( results, searchValue ) {
-				$welcome.addClass( 'core-hide' );
+				document.getElementById( 'welcome' ).classList.add( 'core-hide' );
 				
 				if ( results.donations ) functions.displayDonations( results.donations );
 				if ( results.weapons ) functions.displayWeapons( results.weapons );
@@ -363,7 +212,7 @@
 				if ( results.monsters ) functions.displayMonsters( results.monsters, searchValue );
 			}
 			, displayMonsters ( monsters, selectedTown ) {
-				monsters = variables.templates[ 'results-template' ]( {
+				monsters = Templates.getInstance().buildTemplate( 'results-template', {
 					resultType: 'monsters'
 					, resultLabel: 'Monsters'
 					, resultLabels: [
@@ -374,10 +223,10 @@
 					, results: functions.buildMonstersResultMap( monsters, selectedTown )
 				} );
 				
-				$globalContent.append( monsters );
+				document.getElementById( 'core-content' ).innerHTML += monsters;
 			}
 			, displayPotions ( potions ) {
-				potions = variables.templates[ 'results-template' ]( {
+				potions = Templates.getInstance().buildTemplate( 'results-template', {
 					resultType: 'potions'
 					, resultLabel: 'Potions'
 					, resultLabels: [
@@ -389,10 +238,10 @@
 					, results: functions.buildPotionsResultMap( potions )
 				} );
 				
-				$globalContent.append( potions );
+				document.getElementById( 'core-content' ).innerHTML += potions;
 			}
 			, displayWeapons ( weapons ) {
-				weapons = variables.templates[ 'results-template' ]( {
+				weapons = Templates.getInstance().buildTemplate( 'results-template', {
 					  resultType: 'weapons'
 					, resultLabel: 'Weapons'
 					, resultLabels: [
@@ -405,92 +254,51 @@
 					, results: functions.buildWeaponsResultMap( weapons )
 				} );
 				
-				$globalContent.append( weapons );
+				document.getElementById( 'core-content' ).innerHTML += weapons;
 			}
-			, openMainMenu ( e ) {
-				e.preventDefault();
+			, processCoreMenuOption ( event ) {
+				event.preventDefault();
+
+				document.getElementById( 'core-no-menu' ).checked = true;
+
+				let selectedValue = this.getAttribute( 'data-value' )
+					, endpoint = this.getAttribute( 'data-endpoint' ) +'/'+ selectedValue;
 				
-				if ( functions.touchEventEndedOnSameElement( e ) ) {
-					functions.clearPreviousResults();
-					functions.closeOpenMenus();
-					Core.getInstance().showOverlay();
-					$mainMenu.removeClass( 'core-hide' );
-				}
-			}
-			, openSubMenu ( e ) {
-				e.preventDefault();
-				
-				if ( functions.touchEventEndedOnSameElement( e ) ) {
-					functions.closeOpenMenus();
-					Core.getInstance().showOverlay();
-					$allMenus.filter( '.'+ $( this ).data( 'submenu' ) ).removeClass( 'core-hide' );
-				}
-			}
-			, processMenuOption ( e ) {
-				e.preventDefault();
-				
-				if ( functions.touchEventEndedOnSameElement( e ) ) {
-					functions.closeOpenMenus();
-					
-					let $option = $( this )
-						, $menu = $option.closest( '.sub-menu' )
-						, selectedValue = $option.data( 'value' )
-						, endpoint = $menu.data( 'endpoint' ) +'/'+ selectedValue;
-					
-					functions.displayEndpoint( endpoint, selectedValue );
-					history.pushState( { endpoint: endpoint, selectedValue: selectedValue }, document.title, document.location.href );
-				}
-			}
-			, touchEventEndedOnSameElement ( e ) {
-				if ( e.changedTouches ) {
-					var touchStop = e.changedTouches[ 0 ]
-						, lastElement = document.elementFromPoint( touchStop.clientX, touchStop.clientY );
-					
-					return ( e.target === lastElement );
-				}
-				
-				return true;
+				functions.displayEndpoint( endpoint, selectedValue );
+				history.pushState( { endpoint: endpoint, selectedValue: selectedValue }, document.title, document.location.href );
 			}
 		};
-		
+
 		let api = {
 			privateFunctions: functions
 			, privateVariables: variables
 			, initialize () {
-				let initializationMethods = [
-					'compileTemplates'
-					, 'createMainMenu'
-					, 'createCategorySubMenu'
-					, 'createAccessorySubMenu'
-					, 'createWeaponSubMenu'
-					, 'createMonsterSubMenu'
-					, 'createLevelSubMenu'
-					, 'bindMainMenuAction'
-					, 'bindSubMenuAction'
-					, 'bindOverlayAction'
+				let methods = [
+					'bindCoreMenuOptions'
+					, 'bindCoreMainMenuLink'
 				];
-				
-				initializationMethods.forEach( ( methodName ) => {
-					functions[ methodName ]();
-					delete functions[ methodName ];
+
+				methods.forEach( ( method ) => {
+					functions[ method ]();
+					delete functions[ method ];
 				} );
-				
-				delete instance.initialize;
+
+				delete api.initialize;
 			}
 		};
-		
+
 		return api;
-	};
-	
+	}
+
 	return {
 		getInstance () {
 			if ( !instance ) {
 				instance = buildApi();
-				
+
 				delete instance.privateFunctions;
 				delete instance.privateVariables;
 			}
-			
+
 			return instance;
 		}
 		, getTestInstance: buildApi
@@ -498,4 +306,3 @@
 } )( jQuery, window, document );
 
 Hiddenworld.getInstance().initialize();
-*/

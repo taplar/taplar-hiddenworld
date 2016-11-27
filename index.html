@@ -32,6 +32,14 @@
 			</div>
 		</div>
 
+		<input type="checkbox" id="core-spinner-state">
+
+		<label class="core-overlay">
+			<div id="core-spinner">
+				<i class="fa fa-spinner fa-pulse"></i>
+			</div>
+		</label>
+
 		<script type="text/x-handlebars-template" class="template" id="main-menu-template">
 			<input type="radio" name="core-single-menu-state" class="core-menu-state" id="core-main-menu">
 
@@ -73,30 +81,6 @@
 			</label>
 		</script>
 
-		<!--
-		<div id="core-container">
-			<div id="core-spinner">
-				<input type="checkbox" id="core-spinner-state">
-				<div class="core-overlay">
-					<i class="fa fa-spinner fa-pulse"></i>
-				</div>
-			</div>
-		</div>
-		
-		<script type="text/x-handlebars-template" class="template" id="submenu-template">
-			<div class="{{subMenuType}}-menu dialog sub-menu core-hide" data-endpoint="{{endpoint}}">
-				<ul class="menu-list">
-					<li class="label">{{menuLabel}}</li>
-					
-					<li>
-						{{#options}}
-							<a href="#" class="menu-option" data-value="{{value}}">{{label}}</a>
-						{{/options}}
-					</li>
-				</ul>
-			</div>
-		</script>
-		
 		<script type="text/x-handlebars-template" class="template" id="results-template">
 			<div class="{{resultType}} result-container">
 				<div class="title">{{resultLabel}}</div>
@@ -122,7 +106,7 @@
 				</table>
 			</div>
 		</script>
-		-->
+		
 		<script src="./public/scripts/vendor/jquery/3.0.0/jquery.min.js"></script>
 		<script src="./public/scripts/vendor/handlebars/1.0.0/handlebars.min.js"></script>
 		<script src="./public/scripts/src/all.js"></script>
