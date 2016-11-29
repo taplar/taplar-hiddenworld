@@ -30,7 +30,7 @@
 
 		let functions = {
 			bindCoreMainMenuLink () {
-				document.getElementById( 'core-main-menu-link' ).addEventListener( 'click', function () {
+				document.getElementById( 'core-main-menu' ).addEventListener( 'change', function () {
 					document.getElementsByClassName( 'result-container' ).toArray().forEach( ( element ) =>
 						element.parentNode.removeChild( element )
 					);
@@ -39,8 +39,8 @@
 				} );
 			}
 			, bindCoreMenuOptions () {
-				document.getElementsByClassName( 'core-menu-option' ).toArray().forEach( ( element ) =>
-					element.addEventListener( 'click', functions.processCoreMenuOption )
+				document.getElementsByClassName( 'core-menu-list-option' ).toArray().forEach( ( element ) =>
+					element.addEventListener( 'change', functions.processCoreMenuOption )
 				);
 			}
 			, buildAccessoriesResultMap ( accessories ) {

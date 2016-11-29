@@ -72,7 +72,8 @@
 						<li>
 							<label for="{{subMenuType}}-menu" class="core-menu-list-options">
 								{{#options}}
-									<a href="#" class="core-menu-option" data-endpoint="{{endpoint}}" data-value="{{value}}">{{label}}</a>
+									<input type="checkbox" class="core-menu-list-option" id="{{subMenuType}}-{{label}}-state" data-endpoint="{{endpoint}}" data-value="{{value}}">
+									<label for="{{subMenuType}}-{{label}}-state" class="core-menu-option">{{label}}</label>
 								{{/options}}
 							</label>
 						</li>
