@@ -1,10 +1,6 @@
 ;let Hiddenworld = ( ( $, window, document, undefined ) => {
 	let instance;
 
-	HTMLCollection.prototype.toArray = function () {
-		return Array.prototype.map.call( this, ( element ) => element );
-	};
-
 	function buildApi () {
 		let variables = {
 			allTowns: {
@@ -31,7 +27,7 @@
 		let functions = {
 			bindCoreMainMenuLink () {
 				document.getElementById( 'core-main-menu' ).addEventListener( 'change', function () {
-					document.getElementsByClassName( 'result-container' ).toArray().forEach( ( element ) =>
+					functions.toArray( document.getElementsByClassName( 'result-container' ) ).forEach( ( element ) =>
 						element.parentNode.removeChild( element )
 					);
 
@@ -39,7 +35,7 @@
 				} );
 			}
 			, bindCoreMenuOptions () {
-				document.getElementsByClassName( 'core-menu-list-option' ).toArray().forEach( ( element ) =>
+				functions.toArray( document.getElementsByClassName( 'core-menu-list-option' ) ).forEach( ( element ) =>
 					element.addEventListener( 'change', functions.processCoreMenuOption )
 				);
 			}
@@ -266,6 +262,9 @@
 				
 				functions.displayEndpoint( endpoint, selectedValue );
 				history.pushState( { endpoint: endpoint, selectedValue: selectedValue }, document.title, document.location.href );
+			}
+			, toArray ( htmlCollection ) {
+				return Array.prototype.map.call( htmlCollection, ( element ) => element );
 			}
 		};
 
