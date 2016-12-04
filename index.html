@@ -18,7 +18,7 @@
 			<div id="core-title">Hiddenworld</div>
 
 			<label for="core-main-menu" id="core-main-menu-link">
-				<input type="radio" name="core-single-menu-state" class="core-menu-state" id="core-no-menu" checked="checked">
+				<input type="radio" name="core-single-menu-state" class="core-menu-state core-element-state" id="core-no-menu" checked="checked">
 				<i class="core-main-menu-icon fa fa-bars" title="Main Menu"></i>
 			</label>
 		</div>
@@ -32,16 +32,16 @@
 			</div>
 		</div>
 
-		<input type="checkbox" id="core-spinner-state">
+		<input type="checkbox" class="core-element-state" id="core-spinner-state">
 
-		<label class="core-overlay">
+		<label class="core-element core-overlay">
 			<div id="core-spinner">
 				<i class="fa fa-spinner fa-pulse"></i>
 			</div>
 		</label>
 
 		<script type="text/x-handlebars-template" class="template" id="main-menu-template">
-			<input type="radio" name="core-single-menu-state" class="core-menu-state" id="core-main-menu">
+			<input type="radio" name="core-single-menu-state" class="core-element-state core-menu-state" id="core-main-menu">
 
 			<label for="core-no-menu" class="core-overlay">
 				<div class="core-menu">
@@ -62,7 +62,7 @@
 		</script>
 
 		<script type="text/x-handlebars-template" class="template" id="submenu-template">
-			<input type="radio" name="core-single-menu-state" class="core-menu-state" id="{{subMenuType}}-menu">
+			<input type="radio" name="core-single-menu-state" class="core-element-state core-menu-state" id="{{subMenuType}}-menu">
 
 			<label for="core-no-menu" class="core-overlay">
 				<div class="core-menu">
@@ -72,7 +72,7 @@
 						<li>
 							<label for="{{subMenuType}}-menu" class="core-menu-list-options">
 								{{#options}}
-									<input type="checkbox" class="core-menu-list-option" id="{{subMenuType}}-{{label}}-state" data-endpoint="{{endpoint}}" data-value="{{value}}">
+									<input type="checkbox" class="core-menu-list-option core-hide" id="{{subMenuType}}-{{label}}-state" data-endpoint="{{endpoint}}" data-value="{{value}}">
 									<label for="{{subMenuType}}-{{label}}-state" class="core-menu-option">{{label}}</label>
 								{{/options}}
 							</label>
@@ -108,8 +108,6 @@
 			</div>
 		</script>
 		
-		<script src="./public/scripts/vendor/jquery/3.0.0/jquery.min.js"></script>
-		<script src="./public/scripts/vendor/handlebars/1.0.0/handlebars.min.js"></script>
 		<script src="./public/scripts/src/all.js"></script>
 	</body>
 </html>
