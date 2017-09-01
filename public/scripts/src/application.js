@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import VueResource from 'vue-resource-2';
+import VueResource from 'vue-resource';
 import Application from './controllers/application/Application.vue';
 import { dataModel } from './dataModel.js';
 
