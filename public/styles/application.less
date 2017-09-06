@@ -150,11 +150,11 @@ body {
 		color: @color-white;
 		font-size: @base-font-size * 2;
 		line-height: @application-header-height;
-		transition: top 1s;
+		transition: transform 1s;
 
 
 		&.slideUp {
-			top: -@application-header-height;
+			transform: translateY(-@application-header-height);
 		}
 
 
