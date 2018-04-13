@@ -1,2 +1,2 @@
 # taplar-hiddenworld
-Source files for hiddenworld.taplar.com
+Source files for https://taplar.github.io/hiddenworld
